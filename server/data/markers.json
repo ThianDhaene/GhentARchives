@@ -1,0 +1,18 @@
+[
+    {
+      "id": 1,
+      "name": "Historisch Gebouw 1",
+      "coordinates": [3.721, 51.054]
+    },
+    {
+      "id": 2,
+      "name": "Historisch Gebouw 2",
+      "coordinates": [3.729, 51.059]
+    },
+    {
+      "id": 3,
+      "name": "Historisch Gebouw 3",
+      "coordinates": [3.725, 51.050]
+    }
+  ]
+  
