@@ -1,18 +1,23 @@
 [
-    {
+  {
       "id": 1,
-      "name": "Historisch Gebouw 1",
-      "coordinates": [3.721, 51.054]
-    },
-    {
+      "name": "Stadhuis van Gent",
+      "coordinates": [3.7224, 51.0543],
+      "image": "https://upload.wikimedia.org/wikipedia/commons/d/d2/Stadhuis.jpg",
+      "description": "Het Stadhuis van Gent is een historisch gebouw."
+  },
+  {
       "id": 2,
-      "name": "Historisch Gebouw 2",
-      "coordinates": [3.729, 51.059]
-    },
-    {
-      "id": 3,
-      "name": "Historisch Gebouw 3",
-      "coordinates": [3.725, 51.050]
-    }
-  ]
-  
+      "name": "Gravensteen",
+      "coordinates": [3.7212, 51.0545],
+      "image": "https://upload.wikimedia.org/wikipedia/commons/d/d2/Stadhuis.jpg",
+      "description": "Het Gravensteen is een middeleeuws kasteel in Gent."
+  },
+  {
+    "id": 3,
+    "name": "Gebouwtje",
+    "coordinates": [3.725, 51.050],
+    "image": "https://upload.wikimedia.org/wikipedia/commons/d/d2/Stadhuis.jpg",
+    "description": "Dit is ook een gebouwtje."
+  }
+]

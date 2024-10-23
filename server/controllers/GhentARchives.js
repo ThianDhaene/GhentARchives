@@ -5,3 +5,15 @@ import markers from '../data/markers.json' assert { type: 'json' };
 export const getAllMarkers = (req, res) => {
   res.json(markers);
 };
+
+// Haal een specifiek monument op
+export const getMarkerById = (req, res) => {
+  const { id } = req.params;
+  const marker = markers.find(m => m.id === parseInt(id, 10));
+  
+  if (marker) {
+      res.json(marker);
+  } else {
+      res.status(404).send({ error: 'Marker niet gevonden' });
+  }
+};

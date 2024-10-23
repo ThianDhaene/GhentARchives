@@ -38,12 +38,13 @@ a:hover {
 
 /* Basic styling for buttons */
 button {
-    background-color: #3498db;
+    background-color: #b7b7b7;
     color: white;
     border: none;
     padding: 10px 20px;
     cursor: pointer;
     border-radius: 5px;
+    margin: 3px;
 }
 
 button:hover {
@@ -56,3 +57,41 @@ button:hover {
     margin: 0 auto;
     padding: 20px;
 }
+
+
+/* Stijl voor de popup */
+.ol-popup {
+    position: absolute;
+    background-color: white;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #cccccc;
+    bottom: 12px;
+    left: -50px;
+    min-width: 200px;
+  }
+  
+/* Stijl voor de sluitknop */
+.ol-popup-closer {
+text-decoration: none;
+position: absolute;
+top: 2px;
+right: 8px;
+font-size: 18px;
+font-weight: bold;
+color: #333;
+background: transparent;
+border: none;
+cursor: pointer;
+}
+  
+/* Verberg de standaardstijl van de sluitknop als afbeelding */
+.ol-popup-closer::before {
+content: '×'; /* Dit geeft een kruisje weer */
+}
+
+/* Als de knop wordt aangeklikt, wordt hij verborgen */
+.ol-popup-closer:hover {
+color: red;
+}
+  
