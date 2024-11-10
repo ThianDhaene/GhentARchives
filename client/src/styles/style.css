@@ -94,4 +94,49 @@ content: '×'; /* Dit geeft een kruisje weer */
 .ol-popup-closer:hover {
 color: red;
 }
+
+
+.popup-content {
+    font-family: Arial, sans-serif;
+    line-height: 1.5;
+    color: #333;
+  }
+  
+  .popup-content h2 {
+    font-size: 1.6em;
+    margin-bottom: 10px;
+  }
+  
+  .popup-content .description {
+    font-size: 1em;
+    color: #666;
+  }
+  
+  .popup-content .popup-image {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+  }
+  
+  .popup-content .ar-link {
+    margin-top: 20px;
+  }
+  
+  .popup-content .ar-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1em;
+  }
+  
+  .popup-content .ar-button:hover {
+    background-color: #0056b3;
+  }
+  
   

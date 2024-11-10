@@ -48,7 +48,7 @@ const sparqlQuery = `
     OPTIONAL { ?item wdt:P18 ?image. }           # Optional image
     SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
   }
-  LIMIT 20
+  LIMIT 200
 `;
 
 const endpointUrl = 'https://query.wikidata.org/sparql';
@@ -116,18 +116,21 @@ function addMarkersToMap(markers) {
   });
 }
 
+// Define the image click handler function in the global scope
+function openImageInNewTab(imageUrl) {
+  window.open(imageUrl, '_blank');
+}
+
 async function showMarkerInfo(monumentId, coordinate) {
   try {
     // SPARQL query to fetch name, image, and description with Dutch and English preference
     const sparqlQuery = `
-      SELECT ?itemLabel ?image ?description WHERE {
+      SELECT ?itemLabel ?description ?image WHERE {
         wd:${monumentId} rdfs:label ?itemLabel.
+        OPTIONAL { wd:${monumentId} schema:description ?description. }
         OPTIONAL { wd:${monumentId} wdt:P18 ?image. }
-        OPTIONAL {
-          wd:${monumentId} schema:description ?description.
-          FILTER(LANG(?description) = "nl" || LANG(?description) = "en")
-        }
-        SERVICE wikibase:label { bd:serviceParam wikibase:language "[nl, en]". }
+        FILTER(LANG(?itemLabel) IN ("nl", "en"))
+        FILTER(LANG(?description) IN ("nl", "en"))
       }
     `;
 
@@ -146,39 +149,43 @@ async function showMarkerInfo(monumentId, coordinate) {
     // Extract the label (name), description, and image from the response
     const monumentData = data.results.bindings[0];
     const name = monumentData ? monumentData.itemLabel.value : 'Unknown Monument';
-
-    // Use Dutch first for description, then English, if available
     let description = monumentData && monumentData.description ? monumentData.description.value : 'No description available.';
+    const imageUrl = monumentData && monumentData.image ? monumentData.image.value : null; // Set to null if no image is found
 
-    const imageUrl = monumentData && monumentData.image ? monumentData.image.value : 'default-image-url.jpg';
-
-    // Create the image click handler to open a larger view of the image
-    const imageClickHandler = () => {
-      window.open(imageUrl, '_blank');
-    };
+    // Conditionally include image and AR button only if image is available
+    const imageContent = imageUrl
+      ? `<img src="${imageUrl}" alt="${name}" class="popup-image" id="popup-image">`
+      : '';
+    const arButtonContent = imageUrl
+      ? `<p><a href="/ar/${monumentId}" class="ar-button" target="_blank">View in AR</a></p>`
+      : '';
 
     // Create the popup content
     const content = `
-      <strong>${name}</strong><br>
-      <p>${description}</p><br>
-      <img src="${imageUrl}" alt="${name}" style="width: 100px; height: auto; cursor: pointer;" onclick="(${imageClickHandler.toString()})()"><br>
-      <p>Click the link to view more information or explore in AR.</p>
-      <a href="/ar/${monumentId}" target="_blank">View in AR</a>
+      <div class="popup-content">
+        <h2>${name}</h2>
+        <p class="description">${description}</p>
+        ${imageContent} <!-- Image is included only if available -->
+        ${arButtonContent} <!-- AR button is included only if an image is available -->
+      </div>
     `;
 
     // Update the popup content and show it at the clicked coordinate
     document.getElementById('popup-content').innerHTML = content;
     overlay.setPosition(coordinate);
+
+    // Add the event listener to the image to open it in a new tab, only if image exists
+    if (imageUrl) {
+      const imageElement = document.getElementById('popup-image');
+      imageElement.addEventListener('click', function() {
+        openImageInNewTab(imageUrl);
+      });
+    }
+
   } catch (error) {
     console.error('Error fetching monument information:', error);
   }
 }
-
-
-
-
-
-
 
 
 // Close the popup
