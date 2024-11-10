@@ -1,4 +1,5 @@
-import markers from '../data/markers.json' assert { type: 'json' };
+import fs from 'fs';
+const markers = JSON.parse(fs.readFileSync(new URL('../data/markers.json', import.meta.url)));
 
 
 // Functie om alle markers op te halen

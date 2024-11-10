@@ -115,3 +115,36 @@ async function fetchMarkers() {
     console.error('Fout bij het ophalen van markers:', error);
   }
 }
+
+// SPARQL query to fetch buildings/monuments in Ghent
+const sparqlQuery = `
+  SELECT ?item ?itemLabel ?coordinate ?image WHERE {
+    ?item wdt:P31 wd:Q41176;                     # Instance of "building"
+          wdt:P131 wd:Q1296;                     # Located in Ghent (Q1296)
+          wdt:P625 ?coordinate.                  # Has coordinates
+    OPTIONAL { ?item wdt:P18 ?image. }           # Optional image
+    SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+  }
+  LIMIT 20
+`;
+
+const endpointUrl = 'https://query.wikidata.org/sparql';
+const url = `${endpointUrl}?query=${encodeURIComponent(sparqlQuery)}`;
+
+// Fetch the data directly from the client
+fetch(url, {
+  headers: {
+    'Accept': 'application/sparql-results+json',
+  },
+})
+  .then(response => response.json())
+  .then(data => {
+    // Process the data as needed
+    const buildings = data.results.bindings;
+    console.log('Fetched Ghent buildings:', buildings);
+    // Display or manipulate the buildings data
+  })
+  .catch(error => {
+    console.error('Error fetching data from Wikidata:', error);
+  });
+
