@@ -1,11 +1,10 @@
 # GhentARchives
 
-Bekijk verschillende historische gebouwen in Gent op een kaart en zie hoe ze er vroeger uitzagen in AR.
+View historical buildings in Ghent on a map with the option to see how they looked before in AR!
 
+## Installation
 
-## Installatie
-
-1. Clone  repository:
+1. Clone the repository:
    ```bash
    git clone https://github.com/your-username/my-ar-project.git
    ```
@@ -14,15 +13,15 @@ Bekijk verschillende historische gebouwen in Gent op een kaart en zie hoe ze er 
    npm install
    ```
 
-## Lokaal gebruiken
+## Usage
 
 1. Run the project locally:
    ```bash
    npm run dev
    ```
-## Bezoek de site
 
-[Klik hier om de site te bezoeken!]([https://www.example.com](https://ghentarchives.thiandhaene.ikdoeict.be/))
+## Visit the site
+[Click here to visit the site]([https://www.example.com](https://ghentarchives.thiandhaene.ikdoeict.be/))
 
 ## License
 
