@@ -21,7 +21,7 @@ View historical buildings in Ghent on a map with the option to see how they look
    ```
 
 ## Visit the site
-[Click here to visit the site](https://www.example.com](https://ghentarchives.thiandhaene.ikdoeict.be/)
+[Bekijk de live demo](https://ghentarchives.thiandhaene.ikdoeict.be/)
 
 ## License
 
