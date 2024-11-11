@@ -123,22 +123,29 @@ function openImageInNewTab(imageUrl) {
 
 async function showMarkerInfo(monumentId, coordinate) {
   try {
-    // SPARQL query to fetch name, image, and description with Dutch and English preference
+    // Uitgebreide SPARQL-query voor extra informatie
     const sparqlQuery = `
-      SELECT ?itemLabel ?description ?image WHERE {
+      SELECT ?itemLabel ?description ?image ?architectLabel ?constructionDate WHERE {
         wd:${monumentId} rdfs:label ?itemLabel.
         OPTIONAL { wd:${monumentId} schema:description ?description. }
         OPTIONAL { wd:${monumentId} wdt:P18 ?image. }
+        OPTIONAL { wd:${monumentId} wdt:P84 ?architect. }
+        OPTIONAL { 
+          wd:${monumentId} p:P793 ?eventStatement.
+          ?eventStatement ps:P793 wd:Q385378;
+                         pq:P585 ?constructionDate.
+        }
+        SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],nl,en". }
         FILTER(LANG(?itemLabel) IN ("nl", "en"))
         FILTER(LANG(?description) IN ("nl", "en"))
       }
     `;
 
-    // Endpoint URL for the Wikidata SPARQL endpoint
+    // Endpoint URL voor de Wikidata SPARQL-endpoint
     const endpointUrl = 'https://query.wikidata.org/sparql';
     const url = `${endpointUrl}?query=${encodeURIComponent(sparqlQuery)}`;
 
-    // Fetch the data from Wikidata
+    // Data ophalen van Wikidata
     const response = await fetch(url, {
       headers: {
         'Accept': 'application/sparql-results+json',
@@ -146,35 +153,45 @@ async function showMarkerInfo(monumentId, coordinate) {
     });
     const data = await response.json();
 
-    // Extract the label (name), description, and image from the response
+    // Gegevens uit de respons halen
     const monumentData = data.results.bindings[0];
-    const name = monumentData ? monumentData.itemLabel.value : 'Unknown Monument';
-    let description = monumentData && monumentData.description ? monumentData.description.value : 'No description available.';
-    const imageUrl = monumentData && monumentData.image ? monumentData.image.value : null; // Set to null if no image is found
+    const name = monumentData ? monumentData.itemLabel.value : 'Onbekend monument';
+    const description = monumentData && monumentData.description ? monumentData.description.value : 'Geen beschrijving beschikbaar.';
+    const imageUrl = monumentData && monumentData.image ? monumentData.image.value : null;
+    const architect = monumentData && monumentData.architectLabel ? monumentData.architectLabel.value : null;
+    const constructionDate = monumentData && monumentData.constructionDate ? monumentData.constructionDate.value.substring(0, 4) : null; // Alleen het jaar
 
-    // Conditionally include image and AR button only if image is available
+    // Bouw de inhoud van de pop-up dynamisch op basis van beschikbare gegevens
     const imageContent = imageUrl
       ? `<img src="${imageUrl}" alt="${name}" class="popup-image" id="popup-image">`
       : '';
     const arButtonContent = imageUrl
-      ? `<p><a href="/ar/${monumentId}" class="ar-button" target="_blank">View in AR</a></p>`
+      ? `<p><a href="/arpage/?name=${encodeURIComponent(name)}&image=${encodeURIComponent(imageUrl)}" class="ar-button" target="_blank">View in AR</a></p>`
+      : '';
+    const architectContent = architect
+      ? `<p><strong>Architect:</strong> ${architect}</p>`
+      : '';
+    const constructionDateContent = constructionDate
+      ? `<p><strong>Bouwjaar:</strong> ${constructionDate}</p>`
       : '';
 
-    // Create the popup content
+    // Maak de pop-up-inhoud aan
     const content = `
       <div class="popup-content">
         <h2>${name}</h2>
         <p class="description">${description}</p>
-        ${imageContent} <!-- Image is included only if available -->
-        ${arButtonContent} <!-- AR button is included only if an image is available -->
+        ${imageContent}
+        ${architectContent}
+        ${constructionDateContent}
+        ${arButtonContent}
       </div>
     `;
 
-    // Update the popup content and show it at the clicked coordinate
+    // Update de inhoud van de pop-up en toon deze bij de aangeklikte coördinaat
     document.getElementById('popup-content').innerHTML = content;
     overlay.setPosition(coordinate);
 
-    // Add the event listener to the image to open it in a new tab, only if image exists
+    // Voeg eventlistener toe aan de afbeelding om deze in een nieuw tabblad te openen, alleen als de afbeelding bestaat
     if (imageUrl) {
       const imageElement = document.getElementById('popup-image');
       imageElement.addEventListener('click', function() {
@@ -183,16 +200,17 @@ async function showMarkerInfo(monumentId, coordinate) {
     }
 
   } catch (error) {
-    console.error('Error fetching monument information:', error);
+    console.error('Fout bij het ophalen van monumentinformatie:', error);
   }
 }
 
-
-// Close the popup
+// Sluit de pop-up
 document.getElementById('popup-closer').onclick = function () {
   overlay.setPosition(undefined);
   return false;
 };
 
-// Run fetchAndAddMarkers to get data and display it on the map
+// Roep fetchAndAddMarkers aan om gegevens op te halen en op de kaart weer te geven
 fetchAndAddMarkers();
+
+
