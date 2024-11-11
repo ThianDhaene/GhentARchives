@@ -5,13 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GhentARchives</title>
     <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/layout.css">
     <script type="module" src="./scripts/loadBuildings.js"></script>
 </head>
 <body>
-    <div id="map" style="width: 100%; height: 700px;"></div>
-    <div id="popup" class="ol-popup">
-        <a href="#" id="popup-closer" class="ol-popup-closer"></a>
-        <div id="popup-content"></div>
-      </div>
+    <header>
+        <div id="logo">
+            <img src="logo.png" alt="GhentARchives Logo">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="./">Home</a></li>
+                <li><a href="/about/">About</a></li>
+                <li><a href="/contact/">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="intro">
+            <h1>Welkom bij GhentARchives</h1>
+            <p>Ontdek de historische monumenten van Gent in augmented reality.</p>
+        </section>
+
+        <section id="map-container">
+            <div id="map" style="width: 100%; height: 700px;"></div>
+            <div id="popup" class="ol-popup">
+                <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+                <div id="popup-content"></div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 GhentARchives.</p>
+    </footer>
 </body>
 </html>

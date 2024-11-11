@@ -139,4 +139,79 @@ color: red;
     background-color: #0056b3;
   }
   
-  
+
+
+/* layout.css */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+header {
+  background-color: #333;
+  color: white;
+  padding: 1em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+header nav ul li {
+  display: inline;
+  margin-right: 20px;
+}
+
+header nav ul li a {
+  color: white;
+  text-decoration: none;
+}
+
+header img{
+  width: 150px;
+}
+
+main {
+  padding: 20px;
+  min-height: 100vh;
+}
+
+footer {
+  background-color: #333;
+  color: white;
+  padding: 1em;
+  text-align: center;
+}
+
+.monument-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.monument-list div {
+  border: 1px solid #ddd;
+  padding: 15px;
+  width: 45%;
+}
+
+form input, form textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+form button {
+  padding: 10px 20px;
+  background-color: #333;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
