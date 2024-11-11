@@ -32,7 +32,6 @@ document.body.appendChild(ARButton.createButton(renderer, { requiredFeatures: ['
 const textureLoader = new THREE.TextureLoader();
 
 if (imageUrl) {
-    // Fetch de afbeelding via fetch() en laad de afbeelding via TextureLoader
     fetch(imageUrl)
       .then(response => response.blob())
       .then(blob => {
