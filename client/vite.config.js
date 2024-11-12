@@ -1,21 +1,14 @@
 import { defineConfig } from 'vite'
 import { resolve } from 'path'
-import basicSsl from '@vitejs/plugin-basic-ssl'
 import { VitePWA } from 'vite-plugin-pwa';
 
-
 export default defineConfig({
-    // omdat index.html, entry point van de app, nu in 'src' zit
     root: 'src',
-    // omdat de root nu in src zit is het pad naar de publicDir nu ../public
     publicDir: '../public',
     envDir: '../',
-    
-    // voor in geval je de dist niet in de root van je webserver plaatst
     base: './',
 
     plugins: [
-        // basicSsl(),
         VitePWA({
             registerType: 'autoUpdate',
             devOptions: {
@@ -45,18 +38,18 @@ export default defineConfig({
             workbox: {
                 runtimeCaching: [
                   {
-                    urlPattern: /^https:\/\/.*\.(?:js|css|html)$/, // Cache voor JavaScript, CSS en HTML bestanden
-                    handler: 'CacheFirst', // CacheFirst om offline toegankelijk te maken
+                    urlPattern: /^https:\/\/.*\.(?:js|css|html)$/, 
+                    handler: 'CacheFirst', 
                     options: {
                       cacheName: 'static-resources',
                       expiration: {
-                        maxEntries: 50, // Aantal bestanden om op te slaan
-                        maxAgeSeconds: 30 * 24 * 60 * 60, // Bewaarduur: 30 dagen
+                        maxEntries: 50,
+                        maxAgeSeconds: 30 * 24 * 60 * 60,
                       },
                     },
                   },
                   {
-                    urlPattern: /^https:\/\/.*\.(?:png|jpg|jpeg|svg|gif)$/, // Cache voor afbeeldingen
+                    urlPattern: /^https:\/\/.*\.(?:png|jpg|jpeg|svg|gif)$/,
                     handler: 'CacheFirst',
                     options: {
                       cacheName: 'image-cache',
@@ -67,13 +60,13 @@ export default defineConfig({
                     },
                   },
                   {
-                    urlPattern: /.*/, // Cache alle andere routes
-                    handler: 'NetworkFirst', // NetworkFirst voor dynamische content
+                    urlPattern: /.*/,
+                    handler: 'NetworkFirst',
                     options: {
                       cacheName: 'pages-cache',
                       expiration: {
                         maxEntries: 50,
-                        maxAgeSeconds: 7 * 24 * 60 * 60, // Bewaarduur: 7 dagen
+                        maxAgeSeconds: 7 * 24 * 60 * 60,
                       },
                     },
                   }

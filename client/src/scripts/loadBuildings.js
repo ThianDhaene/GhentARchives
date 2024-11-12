@@ -39,13 +39,13 @@ const overlay = new Overlay({
 });
 map.addOverlay(overlay);
 
-// SPARQL query to fetch buildings/monuments in Ghent
+// SPARQL query om gebouwen/monumenten in Gent op te halen
 const sparqlQuery = `
   SELECT ?item ?itemLabel ?coordinate ?image WHERE {
-    ?item wdt:P31 wd:Q41176;                     # Instance of "building"
-          wdt:P131 wd:Q1296;                     # Located in Ghent (Q1296)
-          wdt:P625 ?coordinate.                  # Has coordinates
-    OPTIONAL { ?item wdt:P18 ?image. }           # Optional image
+    ?item wdt:P31 wd:Q41176;                     # Instantie van "gebouw"
+          wdt:P131 wd:Q1296;                     # Gelegen in Gent (Q1296)
+          wdt:P625 ?coordinate.                  # Heeft coördinaten
+    OPTIONAL { ?item wdt:P18 ?image. }           # Optionele afbeelding
     SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
   }
   LIMIT 200
@@ -54,7 +54,7 @@ const sparqlQuery = `
 const endpointUrl = 'https://query.wikidata.org/sparql';
 const url = `${endpointUrl}?query=${encodeURIComponent(sparqlQuery)}`;
 
-// Fetch the data from Wikidata and add markers to the map
+// Haal de gegevens op van Wikidata en voeg markers toe aan de kaart
 async function fetchAndAddMarkers() {
   try {
     const response = await fetch(url, {
@@ -66,7 +66,7 @@ async function fetchAndAddMarkers() {
     const markers = data.results.bindings.map(binding => {
       const coordinates = binding.coordinate.value.match(/Point\(([^ ]+) ([^ ]+)\)/);
       return {
-        id: binding.item.value.split('/').pop(), // Extract ID from URI
+        id: binding.item.value.split('/').pop(), // Haal ID uit URI
         name: binding.itemLabel.value,
         coordinates: coordinates ? [parseFloat(coordinates[1]), parseFloat(coordinates[2])] : null,
         image: binding.image ? binding.image.value : null
@@ -75,11 +75,11 @@ async function fetchAndAddMarkers() {
 
     addMarkersToMap(markers);
   } catch (error) {
-    console.error('Error fetching data from Wikidata:', error);
+    console.error('Fout bij het ophalen van gegevens van Wikidata:', error);
   }
 }
 
-// Function to add markers to the map
+// Functie om markers toe te voegen aan de kaart
 function addMarkersToMap(markers) {
   const vectorSource = new VectorSource();
 
@@ -88,7 +88,7 @@ function addMarkersToMap(markers) {
       const feature = new Feature({
         geometry: new Point(fromLonLat(marker.coordinates)),
         name: marker.name,
-        monumentId: marker.id // Ensure each marker has a unique ID
+        monumentId: marker.id // Zorg ervoor dat elke marker een unieke ID heeft
       });
 
       vectorSource.addFeature(feature);
@@ -107,7 +107,7 @@ function addMarkersToMap(markers) {
 
   map.addLayer(markerLayer);
 
-  // Add click event for markers
+  // Voeg klikgebeurtenis toe voor markers
   map.on('singleclick', function (event) {
     map.forEachFeatureAtPixel(event.pixel, function (feature) {
       const monumentId = feature.get('monumentId');
@@ -116,7 +116,7 @@ function addMarkersToMap(markers) {
   });
 }
 
-// Define the image click handler function in the global scope
+// Definieer de afbeelding klik handler functie in de globale scope
 function openImageInNewTab(imageUrl) {
   window.open(imageUrl, '_blank');
 }
@@ -145,7 +145,7 @@ async function showMarkerInfo(monumentId, coordinate) {
     const endpointUrl = 'https://query.wikidata.org/sparql';
     const url = `${endpointUrl}?query=${encodeURIComponent(sparqlQuery)}`;
 
-    // Data ophalen van Wikidata
+    // Haal gegevens op van Wikidata
     const response = await fetch(url, {
       headers: {
         'Accept': 'application/sparql-results+json',
@@ -153,7 +153,7 @@ async function showMarkerInfo(monumentId, coordinate) {
     });
     const data = await response.json();
 
-    // Gegevens uit de respons halen
+    // Haal gegevens uit de respons
     const monumentData = data.results.bindings[0];
     const name = monumentData ? monumentData.itemLabel.value : 'Onbekend monument';
     const description = monumentData && monumentData.description ? monumentData.description.value : 'Geen beschrijving beschikbaar.';
@@ -166,7 +166,7 @@ async function showMarkerInfo(monumentId, coordinate) {
       ? `<img src="${imageUrl}" alt="${name}" class="popup-image" id="popup-image">`
       : '';
     const arButtonContent = imageUrl
-      ? `<p><a href="/arpage/?name=${encodeURIComponent(name)}&image=${encodeURIComponent(imageUrl)}" class="ar-button" target="_blank">View in AR</a></p>`
+      ? `<p><a href="/arpage/?name=${encodeURIComponent(name)}&image=${encodeURIComponent(imageUrl)}" class="ar-button">Bekijk in AR</a></p>`
       : '';
     const architectContent = architect
       ? `<p><strong>Architect:</strong> ${architect}</p>`
@@ -212,5 +212,3 @@ document.getElementById('popup-closer').onclick = function () {
 
 // Roep fetchAndAddMarkers aan om gegevens op te halen en op de kaart weer te geven
 fetchAndAddMarkers();
-
-
