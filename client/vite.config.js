@@ -12,7 +12,7 @@ export default defineConfig({
         VitePWA({
             registerType: 'autoUpdate',
             devOptions: {
-              enabled: true
+              enabled: false
             },
             manifest: {
               name: 'GhentARchives',
@@ -34,44 +34,7 @@ export default defineConfig({
                   type: 'image/png'
                 }
               ]
-            },
-            workbox: {
-                runtimeCaching: [
-                  {
-                    urlPattern: /^https:\/\/.*\.(?:js|css|html)$/, 
-                    handler: 'CacheFirst', 
-                    options: {
-                      cacheName: 'static-resources',
-                      expiration: {
-                        maxEntries: 50,
-                        maxAgeSeconds: 30 * 24 * 60 * 60,
-                      },
-                    },
-                  },
-                  {
-                    urlPattern: /^https:\/\/.*\.(?:png|jpg|jpeg|svg|gif)$/,
-                    handler: 'CacheFirst',
-                    options: {
-                      cacheName: 'image-cache',
-                      expiration: {
-                        maxEntries: 50,
-                        maxAgeSeconds: 30 * 24 * 60 * 60,
-                      },
-                    },
-                  },
-                  {
-                    urlPattern: /.*/,
-                    handler: 'NetworkFirst',
-                    options: {
-                      cacheName: 'pages-cache',
-                      expiration: {
-                        maxEntries: 50,
-                        maxAgeSeconds: 7 * 24 * 60 * 60,
-                      },
-                    },
-                  }
-                ]
-              }
+            }
           })
       ],
     build: {
