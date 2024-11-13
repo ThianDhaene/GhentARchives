@@ -9,33 +9,33 @@ export default defineConfig({
     base: './',
 
     plugins: [
-        VitePWA({
-            registerType: 'autoUpdate',
-            devOptions: {
-              enabled: false
-            },
-            manifest: {
-              name: 'GhentARchives',
-              short_name: 'GhentARchives',
-              description: 'App voor het ontdekken van historische gebouwen in Gent',
-              theme_color: '#ffffff', 
-              background_color: '#ffffff', 
-              display: 'standalone',
-              start_url: '/', 
-              icons: [
-                {
-                  src: '/icon_192.png',
-                  sizes: '192x192',
-                  type: 'image/png'
-                },
-                {
-                  src: '/icon_512.png',
-                  sizes: '512x512',
-                  type: 'image/png'
-                }
-              ]
-            }
-          })
+        // VitePWA({
+        //     registerType: 'autoUpdate',
+        //     devOptions: {
+        //       enabled: false
+        //     },
+        //     manifest: {
+        //       name: 'GhentARchives',
+        //       short_name: 'GhentARchives',
+        //       description: 'App voor het ontdekken van historische gebouwen in Gent',
+        //       theme_color: '#ffffff', 
+        //       background_color: '#ffffff', 
+        //       display: 'standalone',
+        //       start_url: '/', 
+        //       icons: [
+        //         {
+        //           src: '/icon_192.png',
+        //           sizes: '192x192',
+        //           type: 'image/png'
+        //         },
+        //         {
+        //           src: '/icon_512.png',
+        //           sizes: '512x512',
+        //           type: 'image/png'
+        //         }
+        //       ]
+        //     }
+        //   })
       ],
     build: {
         outDir: '../dist',
